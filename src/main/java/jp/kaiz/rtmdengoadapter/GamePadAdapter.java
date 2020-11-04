@@ -1,67 +1,45 @@
 package jp.kaiz.rtmdengoadapter;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.lwjgl.input.Controller;
 
 public abstract class GamePadAdapter {
-    int booleanToInt(boolean b) {
-        return b ? 1 : 0;
-    }
 
-    public boolean isHorn(Controller control){
-        return false;
-    }
+    public abstract boolean isHorn(Controller control);
 
-    public boolean isDoorR(Controller control){
-        return false;
-    }
+    public abstract boolean isDoorR(Controller control);
 
-    public boolean isDoorL(Controller control){
-        return false;
-    }
+    public abstract boolean isDoorL(Controller control);
 
     public int getBrake(Controller control, int lastBrakeLevel) {
-        int brakeLevel;
-        int brakeButton = booleanToInt(control.isButtonPressed(6))
-                + (booleanToInt(control.isButtonPressed(4)) * 2)
-                + (booleanToInt(control.isButtonPressed(7)) * 4)
-                + (booleanToInt(control.isButtonPressed(5)) * 8);
+        int brakeButton = BooleanUtils.toInteger(control.isButtonPressed(6))
+                + BooleanUtils.toInteger(control.isButtonPressed(4)) * 2
+                + BooleanUtils.toInteger(control.isButtonPressed(7)) * 4
+                + BooleanUtils.toInteger(control.isButtonPressed(5)) * 8;
+
         switch (brakeButton) {
             case 15:
-                brakeLevel = lastBrakeLevel;
-                break;
+                return lastBrakeLevel;
             case 14:
-                brakeLevel = 0;
-                break;
+                return 0;
             case 13:
-                brakeLevel = -1;
-                break;
+                return -1;
             case 12:
-                brakeLevel = -2;
-                break;
+                return -2;
             case 11:
-                brakeLevel = -3;
-                break;
+                return -3;
             case 10:
-                brakeLevel = -4;
-                break;
+                return -4;
             case 9:
-                brakeLevel = -5;
-                break;
+                return -5;
             case 8:
-                brakeLevel = -6;
-                break;
+                return -6;
             case 7:
-                brakeLevel = -7;
-                break;
-            case 6:
-                brakeLevel = -8;
-                break;
+                return -7;
             default:
-                brakeLevel = -8;
-                break;
+                return -8;
         }
-        return brakeLevel;
     }
 
-    abstract int getNotch(Controller control, int lastNotchLevel);
+    public abstract int getNotch(Controller control, int lastNotchLevel);
 }

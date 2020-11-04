@@ -20,36 +20,24 @@ public class DPadAsAxisGamePadAdapter extends GamePadAdapter {
     }
 
     public int getNotch(Controller control, int lastNotchLevel) {
-        int notchLevel;
         int notchAxis = (int) control.getXAxisValue();
         boolean notchButton = control.isButtonPressed(0);
         if (notchAxis == -1) {
             if (notchButton) {
-                notchLevel = 3;
+                return 3;
             } else {
-                if (lastNotchLevel == 3
-                        || lastNotchLevel == 4
-                        || lastNotchLevel == 5) {
-                    notchLevel = 4;
+                if (lastNotchLevel == 3 || lastNotchLevel == 4 || lastNotchLevel == 5) {
+                    return 4;
                 } else {
-                    notchLevel = 0;
+                    return 0;
                 }
             }
         } else if (notchAxis == 1) {
-            if (notchButton) {
-                notchLevel = 1;
-            } else {
-                notchLevel = 2;
-            }
+            return notchButton ? 1 : 2;
         } else if (notchAxis == 0) {
-            if (notchButton) {
-                notchLevel = 5;
-            } else {
-                notchLevel = lastNotchLevel;
-            }
+            return notchButton ? 5 : lastNotchLevel;
         } else {
-            notchLevel = lastNotchLevel;
+            return lastNotchLevel;
         }
-        return notchLevel;
     }
 }

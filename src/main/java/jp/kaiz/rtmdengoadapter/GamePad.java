@@ -2,90 +2,95 @@ package jp.kaiz.rtmdengoadapter;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import jp.kaiz.atsassistmod.api.ControlTrain;
 import jp.ngt.rtm.RTMCore;
 import jp.ngt.rtm.entity.train.EntityTrainBase;
+import jp.ngt.rtm.entity.train.util.TrainState;
 import jp.ngt.rtm.event.RTMKeyHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.logging.log4j.Level;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controller;
 import org.lwjgl.input.Controllers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GamePad {
     private Controller control;
     private int lastNotchLevel, lastBrakeLevel;
     private int currentLevel = 0;
     private GamePadAdapter gamePadAdapter;
+    private final List<Controller> controllers = new ArrayList<>();
 
     private boolean isPressHorn, isPressDoorR, isPressDoorL;
 
     public GamePad() throws LWJGLException {
         Controllers.create();
 
-        label:
         for (int i = 0; i < Controllers.getControllerCount(); i++) {
             Controller controller = Controllers.getController(i);
+            this.controllers.add(controller);
             String controllerName = controller.getName();
-            System.out.println("Detected controller(" + i + "): " + controller.getName());
+            RTMDengoAdapter.logger.log(Level.INFO, "Detected controller(" + i + "): " + controller.getName());
             switch (controllerName) {
                 case "ELECOM JC-PS201U series":
-                    control = controller;
-                    gamePadAdapter = new DPadAsButtonGamePadAdapter();
-                    break label;
+                    this.control = controller;
+                    this.gamePadAdapter = new DPadAsButtonGamePadAdapter();
+                    return;
                 case "ELECOM JC-PS101U series":
-                    control = controller;
-                    gamePadAdapter = new DPadAsAxisGamePadAdapter();
-                    break label;
+                    this.control = controller;
+                    this.gamePadAdapter = new DPadAsAxisGamePadAdapter();
+                    return;
                 case "Generic   USB  Joystick  ":
-                    control = controller;
-                    gamePadAdapter = new SanYingGamePadAdapter();
-                    break label;
+                    this.control = controller;
+                    this.gamePadAdapter = new SanYingGamePadAdapter();
+                    return;
             }
         }
     }
 
     @SubscribeEvent
-    public void playerTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
-            if (control == null || gamePadAdapter == null) {
+            if (this.control == null || this.gamePadAdapter == null) {
                 return;
-            }
-            control.poll();
-
-            int notchLevel = gamePadAdapter.getNotch(control, lastNotchLevel);
-            if (lastNotchLevel != notchLevel) {
-                lastNotchLevel = notchLevel;
-            }
-
-            int brakeLevel = gamePadAdapter.getBrake(control, lastBrakeLevel);
-            if (lastBrakeLevel != brakeLevel) {
-                lastBrakeLevel = brakeLevel;
-            }
-
-            int level = (brakeLevel < 0) ? brakeLevel : notchLevel;
-            if (currentLevel != level) {
-                currentLevel = level;
-                TrainNotchController.setNotch(level);
             }
 
             EntityTrainBase train = this.getEntityTrainBase();
-
             if (train == null) {
-                isPressHorn = false;
-                isPressDoorR = false;
-                isPressDoorL = false;
+                this.isPressHorn = false;
+                this.isPressDoorR = false;
+                this.isPressDoorL = false;
                 return;
             }
 
-            if (gamePadAdapter.isHorn(control)) {
-                if (!isPressHorn) {
+            this.control.poll();
+
+            int notchLevel = this.gamePadAdapter.getNotch(this.control, this.lastNotchLevel);
+            if (this.lastNotchLevel != notchLevel) {
+                this.lastNotchLevel = notchLevel;
+            }
+
+            int brakeLevel = this.gamePadAdapter.getBrake(this.control, this.lastBrakeLevel);
+            if (this.lastBrakeLevel != brakeLevel) {
+                this.lastBrakeLevel = brakeLevel;
+            }
+
+            int level = (brakeLevel < 0) ? brakeLevel : notchLevel;
+            if (this.currentLevel != level) {
+                this.currentLevel = level;
+                TrainNotchController.setNotch(level);
+            }
+
+            if (this.gamePadAdapter.isHorn(this.control)) {
+                if (!this.isPressHorn) {
                     try {
-                        isPressHorn = true;
+                        this.isPressHorn = true;
                         Method m = RTMKeyHandlerClient.class.getDeclaredMethod("playSound", EntityPlayer.class, byte.class);
                         m.setAccessible(true);
                         m.invoke(RTMKeyHandlerClient.INSTANCE, Minecraft.getMinecraft().thePlayer, RTMCore.KEY_Horn);
@@ -94,55 +99,44 @@ public class GamePad {
                     }
                 }
             } else {
-                isPressHorn = false;
+                this.isPressHorn = false;
             }
 
-            int nowDoorStateData = train.getTrainStateData(4);
-            int newDoorStateData = nowDoorStateData;
+            byte nowDoorStateData = train.getTrainStateData(TrainState.TrainStateType.State_Door.id);
+            boolean r = (nowDoorStateData & 1) == 1;
+            boolean l = (nowDoorStateData & 2) == 2;
 
-            if (gamePadAdapter.isDoorR(control)) {
-                if (!isPressDoorR) {
-                    isPressDoorR = true;
-                    if (nowDoorStateData == 0 || nowDoorStateData == 2) {
-                        newDoorStateData += 1;
-                    } else {
-                        newDoorStateData -= 1;
-                    }
+            if (this.gamePadAdapter.isDoorR(this.control)) {
+                if (!this.isPressDoorR) {
+                    this.isPressDoorR = true;
+                    r = !r;
                 }
             } else {
-                isPressDoorR = false;
+                this.isPressDoorR = false;
             }
 
-            if (gamePadAdapter.isDoorL(control)) {
-                if (!isPressDoorL) {
-                    isPressDoorL = true;
-                    if (nowDoorStateData == 0 || nowDoorStateData == 1) {
-                        newDoorStateData += 2;
-                    } else {
-                        newDoorStateData -= 2;
-                    }
+            if (this.gamePadAdapter.isDoorL(this.control)) {
+                if (!this.isPressDoorL) {
+                    this.isPressDoorL = true;
+                    l = !l;
                 }
             } else {
-                isPressDoorL = false;
+                this.isPressDoorL = false;
             }
+            byte newDoorStateData = (byte) (BooleanUtils.toInteger(r) << 1 | BooleanUtils.toInteger(l));
 
             if (nowDoorStateData != newDoorStateData) {
-                ControlTrain.setTrainState(4, (byte) newDoorStateData);
+                train.setTrainStateData(TrainState.TrainStateType.State_Door.id, newDoorStateData);
+                train.syncTrainStateData(TrainState.TrainStateType.State_Door.id, newDoorStateData);
             }
         }
     }
 
     private EntityTrainBase getEntityTrainBase() {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) {
-            return null;
-        }
-
-        Entity entity = player.ridingEntity;
+        Entity entity = Minecraft.getMinecraft().thePlayer.ridingEntity;
         if (entity instanceof EntityTrainBase) {
             return (EntityTrainBase) entity;
         }
-
         return null;
     }
 }

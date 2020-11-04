@@ -1,5 +1,6 @@
 package jp.kaiz.rtmdengoadapter;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.lwjgl.input.Controller;
 
 public class SanYingGamePadAdapter extends GamePadAdapter {
@@ -20,80 +21,57 @@ public class SanYingGamePadAdapter extends GamePadAdapter {
     }
 
     public int getNotch(Controller control, int lastNotchLevel) {
-        int notchLevel;
-        int notchButton = booleanToInt(control.isButtonPressed(9))
-                + booleanToInt(control.isButtonPressed(8)) * 2
-                + booleanToInt(control.isButtonPressed(7)) * 4
+        int notchButton = BooleanUtils.toInteger(control.isButtonPressed(9))
+                + BooleanUtils.toInteger(control.isButtonPressed(8)) * 2
+                + BooleanUtils.toInteger(control.isButtonPressed(7)) * 4
                 + 8;
 
         switch (notchButton) {
             case 10:
-                notchLevel = 0;
-                break;
+                return 0;
             case 11:
-                notchLevel = 1;
-                break;
+                return 1;
             case 12:
-                notchLevel = 2;
-                break;
+                return 2;
             case 13:
-                notchLevel = 3;
-                break;
+                return 3;
             case 14:
-                notchLevel = 4;
-                break;
+                return 4;
             case 15:
-                notchLevel = 5;
-                break;
+                return 5;
             default:
-                notchLevel = lastNotchLevel;
-                break;
+                return lastNotchLevel;
         }
-
-        return notchLevel;
     }
 
     public int getBrake(Controller control, int lastBrakeLevel) {
-        int brakeLevel;
-        int brakeButton = booleanToInt(control.isButtonPressed(9))
-                + booleanToInt(control.isButtonPressed(8)) * 2
-                + booleanToInt(control.isButtonPressed(7)) * 4
-                + booleanToInt(control.isButtonPressed(6)) * 8;
+        int brakeButton = BooleanUtils.toInteger(control.isButtonPressed(9))
+                + BooleanUtils.toInteger(control.isButtonPressed(8)) * 2
+                + BooleanUtils.toInteger(control.isButtonPressed(7)) * 4
+                + BooleanUtils.toInteger(control.isButtonPressed(6)) * 8;
         switch (brakeButton) {
             case 0:
-                brakeLevel = lastBrakeLevel;
-                break;
+                return lastBrakeLevel;
             case 1:
-                brakeLevel = -8;
-                break;
+                return -8;
             case 2:
             case 3:
-                brakeLevel = -7;
-                break;
+                return -7;
             case 4:
-                brakeLevel = -6;
-                break;
+                return -6;
             case 5:
-                brakeLevel = -5;
-                break;
+                return -5;
             case 6:
-                brakeLevel = -4;
-                break;
+                return -4;
             case 7:
-                brakeLevel = -3;
-                break;
+                return -3;
             case 8:
-                brakeLevel = -2;
-                break;
+                return -2;
             case 9:
-                brakeLevel = -1;
-                break;
+                return -1;
             default:
-                brakeLevel = 0;
-                break;
+                return 0;
         }
-
-        return brakeLevel;
     }
 
 }

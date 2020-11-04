@@ -33,8 +33,7 @@ disableJInput=true
 
 - Minecraft: 1.7.10
 - Forge: Forge-10.13.4.1614
-- RealTrainMod: 1.7.10.40
-- ATSAssist: 1.4.1beta_v8.3 又は ATSAssistSimple: 3.0
+- RealTrainMod: 1.7.10.41
 
 ---
 
@@ -67,7 +66,7 @@ disableJInput=true
 
 `lib` ディレクトリを作成し、
 
-- [RTM1.7.10.40_Forge10.13.4.1558.jar](https://www.curseforge.com/minecraft/mc-mods/realtrainmod/files/2940834)
+- [RTM1.7.10.41_Forge10.13.4.1558.jar](https://www.curseforge.com/minecraft/mc-mods/realtrainmod/files/3039063)
 - [ATSAssistMod_Simple3.0.jar](https://github.com/Kai-Z-JP/ATSAssistModSimple/releases/tag/Simple3.0)
 
 を `lib` ディレクトリに入れてください。

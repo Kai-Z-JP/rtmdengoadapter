@@ -17,7 +17,7 @@
     "screenshots": [],
     "dependencies": [
       "NGTLib",
-      "atsassistmod"
+      "RTM"
     ]
   }
 ]

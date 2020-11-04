@@ -1,5 +1,6 @@
 package jp.kaiz.rtmdengoadapter;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.lwjgl.input.Controller;
 
 public class DPadAsButtonGamePadAdapter extends GamePadAdapter {
@@ -20,33 +21,25 @@ public class DPadAsButtonGamePadAdapter extends GamePadAdapter {
     }
 
     public int getNotch(Controller control, int lastNotchLevel) {
-        int notchLevel;
-        int brakeButton = booleanToInt(control.isButtonPressed(0))
-                + booleanToInt(control.isButtonPressed(15)) * 2
-                + booleanToInt(control.isButtonPressed(13)) * 4;
+        int brakeButton = BooleanUtils.toInteger(control.isButtonPressed(0))
+                + BooleanUtils.toInteger(control.isButtonPressed(15)) * 2
+                + BooleanUtils.toInteger(control.isButtonPressed(13)) * 4;
+
         switch (brakeButton) {
             case 6:
-                notchLevel = 0;
-                break;
+                return 0;
             case 5:
-                notchLevel = 1;
-                break;
+                return 1;
             case 4:
-                notchLevel = 2;
-                break;
+                return 2;
             case 3:
-                notchLevel = 3;
-                break;
+                return 3;
             case 2:
-                notchLevel = 4;
-                break;
+                return 4;
             case 1:
-                notchLevel = 5;
-                break;
+                return 5;
             default:
-                notchLevel = lastNotchLevel;
-                break;
+                return lastNotchLevel;
         }
-        return notchLevel;
     }
 }
