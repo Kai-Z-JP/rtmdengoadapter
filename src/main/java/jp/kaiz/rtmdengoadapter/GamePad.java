@@ -43,6 +43,7 @@ public class GamePad {
                     this.gamePadAdapter = new DPadAsButtonGamePadAdapter();
                     return;
                 case "ELECOM JC-PS101U series":
+                case "PS  Converter    ":
                     this.control = controller;
                     this.gamePadAdapter = new DPadAsAxisGamePadAdapter();
                     return;
