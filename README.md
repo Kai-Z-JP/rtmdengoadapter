@@ -66,7 +66,6 @@ disableJInput=true
 
 `lib` ディレクトリを作成し、
 
-- [RTM1.7.10.41_Forge10.13.4.1558.jar](https://www.curseforge.com/minecraft/mc-mods/realtrainmod/files/3039063)
 - [ATSAssistMod_Simple3.0.jar](https://github.com/Kai-Z-JP/ATSAssistModSimple/releases/tag/Simple3.0)
 
 を `lib` ディレクトリに入れてください。
