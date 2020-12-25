@@ -124,7 +124,7 @@ public class GamePad {
             } else {
                 this.isPressDoorL = false;
             }
-            byte newDoorStateData = (byte) (BooleanUtils.toInteger(r) << 1 | BooleanUtils.toInteger(l));
+            byte newDoorStateData = (byte) (BooleanUtils.toInteger(r) + BooleanUtils.toInteger(l) * 2);
 
             if (nowDoorStateData != newDoorStateData) {
                 train.setTrainStateData(TrainState.TrainStateType.State_Door.id, newDoorStateData);
