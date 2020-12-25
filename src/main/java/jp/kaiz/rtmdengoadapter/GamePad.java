@@ -9,7 +9,6 @@ import jp.ngt.rtm.event.RTMKeyHandlerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controller;
@@ -57,7 +56,7 @@ public class GamePad {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
+        if (event.phase == TickEvent.Phase.END) {
             if (this.control == null || this.gamePadAdapter == null) {
                 return;
             }
@@ -103,14 +102,19 @@ public class GamePad {
                 this.isPressHorn = false;
             }
 
-            byte nowDoorStateData = train.getTrainStateData(TrainState.TrainStateType.State_Door.id);
+            int nowDoorStateData = train.getTrainStateData(TrainState.TrainStateType.State_Door.id);
+            boolean dir = train.getTrainDirection() == 0;
             boolean r = (nowDoorStateData & 1) == 1;
             boolean l = (nowDoorStateData & 2) == 2;
+            boolean stateR = dir ? l : r;
+            boolean stateL = dir ? r : l;
+            boolean flag = false;
 
             if (this.gamePadAdapter.isDoorR(this.control)) {
                 if (!this.isPressDoorR) {
                     this.isPressDoorR = true;
-                    r = !r;
+                    stateR ^= true;
+                    flag = true;
                 }
             } else {
                 this.isPressDoorR = false;
@@ -119,16 +123,17 @@ public class GamePad {
             if (this.gamePadAdapter.isDoorL(this.control)) {
                 if (!this.isPressDoorL) {
                     this.isPressDoorL = true;
-                    l = !l;
+                    stateL ^= true;
+                    flag = true;
                 }
             } else {
                 this.isPressDoorL = false;
             }
-            byte newDoorStateData = (byte) (BooleanUtils.toInteger(r) + BooleanUtils.toInteger(l) * 2);
+            int newDoorStateData = ((stateR ? 1 : 0) << 1 | (stateL ? 1 : 0));
 
-            if (nowDoorStateData != newDoorStateData) {
-                train.setTrainStateData(TrainState.TrainStateType.State_Door.id, newDoorStateData);
-                train.syncTrainStateData(TrainState.TrainStateType.State_Door.id, newDoorStateData);
+            if (flag) {
+                train.setTrainStateData(TrainState.TrainStateType.State_Door.id, (byte) newDoorStateData);
+                train.syncTrainStateData(TrainState.TrainStateType.State_Door.id, (byte) newDoorStateData);
             }
         }
     }
