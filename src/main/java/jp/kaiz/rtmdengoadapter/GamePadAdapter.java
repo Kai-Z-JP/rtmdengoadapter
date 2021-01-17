@@ -35,6 +35,7 @@ public abstract class GamePadAdapter {
             case 8:
                 return -6;
             case 7:
+            case 6:
                 return -7;
             default:
                 return -8;
