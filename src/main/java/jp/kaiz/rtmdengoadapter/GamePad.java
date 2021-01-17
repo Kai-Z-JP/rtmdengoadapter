@@ -35,13 +35,14 @@ public class GamePad {
             Controller controller = Controllers.getController(i);
             this.controllers.add(controller);
             String controllerName = controller.getName();
-            RTMDengoAdapter.logger.log(Level.INFO, "Detected controller(" + i + "): " + controller.getName());
+            RTMDengoAdapter.logger.log(Level.INFO, "Detected controller(" + i + "): " + controllerName);
             switch (controllerName) {
                 case "ELECOM JC-PS201U series":
                     this.control = controller;
                     this.gamePadAdapter = new DPadAsButtonGamePadAdapter();
                     return;
                 case "ELECOM JC-PS101U series":
+                case "ELECOM JC-PS102U series":
                 case "PS  Converter    ":
                     this.control = controller;
                     this.gamePadAdapter = new DPadAsAxisGamePadAdapter();
