@@ -60,13 +60,6 @@ disableJInput=true
 | コンバーター/コントローラー | 警笛 | 右ドア | 左ドア | | -- | -- | -- | -- | | JC-PS101U | A | START | SELECT | | JC-PS102U | A | START |
 SELECT | | JC-PS201U | A | START | SELECT | | OHC-PC01 | 手前の黒ボタン | 白ボタン | 黄色ボタン |
 
-## ビルド
-
-`lib` ディレクトリを作成し、
-
-- [ATSAssistMod_Simple3.0.jar](https://github.com/Kai-Z-JP/ATSAssistModSimple/releases/tag/Simple3.0)
-
-を `lib` ディレクトリに入れてください。
 
 ### Windows
 
