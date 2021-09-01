@@ -51,6 +51,10 @@ public class GamePad {
                     this.control = controller;
                     this.gamePadAdapter = new SanYingGamePadAdapter();
                     return;
+                case "One Handle MasCon for Nintendo Switch":
+                    this.control = controller;
+                    this.gamePadAdapter = new SwitchOneHandleAdapter();
+                    return;
             }
         }
     }
