@@ -37,15 +37,18 @@ disableJInput=true
 
 ---
 
-- USBゲームパッドコンバータ: 
+- PlayStation用 USBゲームパッドコンバータ:
   - JC-PS201U
     - ドライバより Remap メニューの Use Direction Buttons as: を `Button` に設定してください
   - JC-PS101U
   - JC-PS102U
-- 電車でGO! 専用コントローラ
+- PlayStation用 電車でGO! 専用コントローラ
   - ツーハンドルコントローラ SLPH-00051
   - ワンハンドルコントローラ TCPP-20001
+
 - 三鶯重工 OHC-PC01
+- Switch用 電車でGO! 専用コントローラ
+  - 瑞起製 ワンハンドルコントローラ ZKNS-001
 
 上記以外の動作確認は行っておりません。対応機種を増やすPull Requestは歓迎します。
 
@@ -57,8 +60,13 @@ disableJInput=true
 
 ## 各ボタン機能対照表
 
-| コンバーター/コントローラー | 警笛 | 右ドア | 左ドア | | -- | -- | -- | -- | | JC-PS101U | A | START | SELECT | | JC-PS102U | A | START |
-SELECT | | JC-PS201U | A | START | SELECT | | OHC-PC01 | 手前の黒ボタン | 白ボタン | 黄色ボタン |
+| コンバーター/コントローラー | 警笛 | 右ドア | 左ドア |
+| -- | -- | -- | -- |
+| JC-PS101U | A | START | SELECT |
+| JC-PS102U | A | START | SELECT |
+| JC-PS201U | A | START | SELECT |
+| OHC-PC01 | 手前の黒ボタン | 白ボタン | 黄色ボタン |
+| ZKNS-001 | A | R | L |
 
 
 ### Windows
