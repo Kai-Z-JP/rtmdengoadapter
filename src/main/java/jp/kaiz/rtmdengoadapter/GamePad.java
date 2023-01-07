@@ -151,4 +151,20 @@ public class GamePad {
         }
         return null;
     }
+
+    public boolean isControllerConnected() {
+        return this.control == null || this.gamePadAdapter == null;
+    }
+
+    public int getCurrentLevel() {
+        return this.currentLevel;
+    }
+
+    public int getNotchLevel() {
+        return this.lastNotchLevel;
+    }
+
+    public int getBrakeLevel() {
+        return this.lastBrakeLevel;
+    }
 }
