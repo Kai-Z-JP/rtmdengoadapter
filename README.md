@@ -49,6 +49,7 @@ disableJInput=true
 - 三鶯重工 OHC-PC01
 - Switch用 電車でGO! 専用コントローラ
   - 瑞起製 ワンハンドルコントローラ ZKNS-001
+  - 瑞起製 ワンハンドルコントローラ ZKNS-002
 
 上記以外の動作確認は行っておりません。対応機種を増やすPull Requestは歓迎します。
 
@@ -67,6 +68,7 @@ disableJInput=true
 | JC-PS201U | A | START | SELECT |
 | OHC-PC01 | 手前の黒ボタン | 白ボタン | 黄色ボタン |
 | ZKNS-001 | A | R | L |
+| ZKNS-002 | A | R | L |
 
 
 ### Windows
