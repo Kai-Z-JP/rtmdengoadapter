@@ -63,10 +63,6 @@ public class GamePad {
                     return;
             }
         }
-
-        if(this.control == null || this.gamePadAdapter == null) {
-
-        }
     }
 
     @SubscribeEvent
