@@ -52,9 +52,14 @@ public class GamePad {
                     this.gamePadAdapter = new SanYingGamePadAdapter();
                     return;
                 case "One Handle MasCon for Nintendo Switch":
+                case "ZUIKI MasCon for Nintendo Switch":
                 case "One Handle MasCon for Nintendo Switch Exclusive Edition":
                     this.control = controller;
                     this.gamePadAdapter = new SwitchOneHandleAdapter();
+                    return;
+                case "BU0836 Interface":
+                    this.control = controller;
+                    this.gamePadAdapter = new DenchokuToeiOneHandleAdapter();
                     return;
             }
         }
