@@ -68,7 +68,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    implementation 'com.github.Kai-Z-JP:ATSAssistMod:1.5.0'
+    implementation 'com.github.Kai-Z-JP:ATSAssistMod:1.6.1'
     implementation "curse.maven:ngtlib-288989:2940833"
     implementation "curse.maven:realtrainmod-288988:3039063"
 }
